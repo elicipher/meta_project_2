@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+    <head>
+        
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content="Personal, Portfolio, Creative">
+        <meta name="description" content="Kalvin Portfolio Template">
+        <meta name="author" content="cosmos-themes">
+        <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .heart-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        .heart-button:hover {
+            background-color: #ffe6e6;
+        }
+        .heart-icon {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+        
+        <title>{% block title %}{% endblock %}</title>
+        
+
+        <!-- favicon -->
+        <link href="{{ STATIC_PATH }}images/icon_eli.png" rel="icon" type="image/png">
+
+        <!--Font Awesome css-->
+        <link rel="stylesheet" href="{{ STATIC_PATH }}css/font-awesome.min.css">
+
+        <!--Bootstrap css-->
+        <link rel="stylesheet" href="{{ STATIC_PATH }}css/bootstrap.css">
+
+        <!--Owl Carousel css-->
+        <link rel="stylesheet" href="{{ STATIC_PATH }}css/owl.carousel.min.css">
+        <link rel="stylesheet" href="{{ STATIC_PATH }}css/owl.theme.default.min.css">
+
+        <!--Magnific Popup css-->
+        <link rel="stylesheet" href="/{{ STATIC_PATH }}css/magnific-popup.css">
+
+      
+        <!--Site Main Style css-->
+        <link rel="stylesheet" href="{{ STATIC_PATH }}css/style.css">
+
+    </head>
+    
+    {% block content %}
+    {% endblock %}
+
+ <!--Footer Start-->
+    <footer class="pt-50 pb-50">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 col-sm-6">
+                    <!--Contant Item-->
+                    <div class="contact-info">
+                        <h5>نت کپی</h5>
+                        <p>لورم ایپسوم متن ساختگی </p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <!--Contant Item-->
+                    <div class="contact-info">
+                        <h5>تلفن</h5>
+                        <p>(+98) 123 456 7890</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <!--Contant Item-->
+                    <div class="contact-info">
+                        <h5>ایمیل</h5>
+                        <p>info@example.com</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <!--Contant Item-->
+                    <div class="contact-info">
+                        <h5>آدرس</h5>
+                        <p>ایران،تهران،برج میلاد</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <hr>
+                    <p class="copy pt-30">
+                        فارسی و راست چین شده توسط <a style="color: dodgerblue;" href="https://netcopy.ir">نت کپی</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--Footer End-->
+
+    <!--Jquery js-->
+    <script src="{{ STATIC_PATH }}js/jquery.min.js"></script>
+    <!--Bootstrap js-->
+    <script src="{{ STATIC_PATH }}js/bootstrap.min.js"></script>
+    <!--Stellar js-->
+    <script src="{{ STATIC_PATH }}js/jquery.stellar.js"></script>
+    <!--Animated Headline js-->
+    <script src="{{ STATIC_PATH }}js/animated.headline.js"></script>
+    <!--Owl Carousel js-->
+    <script src="{{ STATIC_PATH }}js/owl.carousel.min.js"></script>
+    <!--ScrollIt js-->
+    <script src="{{ STATIC_PATH }}js/scrollIt.min.js"></script>
+    <!--Isotope js-->
+    <script src="{{ STATIC_PATH }}js/isotope.pkgd.min.js"></script>
+    <!--Magnific Popup js-->
+    <script src="{{ STATIC_PATH }}js/jquery.magnific-popup.min.js"></script>
+    <!--Site Main js-->
+    <script src="{{ STATIC_PATH }}js/main.js"></script>
+
+</body>
+</html>
+

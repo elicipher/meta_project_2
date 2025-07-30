@@ -1,0 +1,32 @@
+{% extends 'auth_base.html' %}
+{% block title %}
+<title>ثبت نام </title>
+
+{% endblock %}
+{% block content %}
+<h2>ثبت نام</h2>
+    <p>لطفاً اطلاعات خود را وارد کنید.</p>
+<form method="post" action="{% url 'account:user_register' %}">
+    {% csrf_token %}
+    <div class="col-12">
+        {{ form.full_name }}
+        <small class="text-danger">{{ form.full_name.errors }}</small>
+    </div>
+    <div class="col-12">
+        {{ form.email }}
+        <small class="text-danger">{{ form.email.errors }}</small>
+    </div>
+    <div class="col-12">
+        {{ form.password }}
+        <small class="text-danger">{{ form.password.errors }}</small>
+    </div>
+    <div class="col-12">
+        {{ form.confirm_password }}
+        <small class="text-danger">{{ form.confirm_password.errors }}</small>
+    </div>
+    <button class="submit-btn">ثبت نام</button>
+</form>
+<div class="footer">
+    <p>حساب کاربری دارید؟ <a href="{% url 'account:user_login' %}">ورود</a></p>
+</div>
+{% endblock %}

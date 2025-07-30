@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <body>
+
+        <!--Preloader Start-->
+
+        <!--Preloader End-->
+
+        <!--Navbar Start-->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <!-- LOGO -->
+                <a class="navbar-brand logo" href="{% url 'home:home' %}">
+                    الی سایفر
+                </a>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'blog:blog' %}" class="nav-link active">برگشت</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!--Navbar End-->
+
+        <section class="banner-blog">
+            <div id="particles-js"></div>
+            <!--Banner Caption-->
+            <div class="banner-caption text-center">
+                <h1>صفحه پست وبلاگ</h1>
+                <div class="bread-crumb mt-10">
+                    <a href="{% url 'home:home' %}">خانه</a>
+                    <a href="{% url 'blog:blog' %}">وبلاگ</a>
+                    <a href="#">صفحه</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="blog-detail pt-100 pb-100">
+            <div class="container">
+                <div class="row">
+                    <!--Blog Content-->
+                    <div class="col-lg-8 offset-lg-2">
+                        <!--Blog Image-->
+                        <div class="blog-image">
+                            {% if post.image %}
+                            <img src="{{post.image.url}}" alt="">
+                            {% endif %}
+                        </div>
+                        <!--Blog Heading-->
+                        <div class="blog-heading">
+                            {% block title %}{{post.title}}{% endblock %}
+                            <h2>{{post.title}}</h2>
+                            <div class="blog-meta">
+                                <span class="date">{{post.jpublish}}</span>
+                                <span class="by">توسط <b>💙{{post.author}}💙</b> </span>
+                                
+                            </div>
+                        </div>
+                        <!--Blog Content-->
+                        <div class="blog-content">
+                            <p>{{post.description|safe}}</p>
+                        </div>
+                        
+                        <div class="blog-meta">
+                           <!-- دکمه لایک -->
+                           <form id="like-form" action="{% url 'blog:post_like' post.slug post.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="heart-button" id="like-button">
+                                <img id="like-icon" class="heart-icon" 
+                                     src="{{ STATIC_PATH }}images/like/{% if has_liked %}Like.png{% else %}unlike.png{% endif %}" 
+                                     alt="heart">
+                                <span id="like-text" class="like-text">
+                                    {% if has_liked %}
+                                        لایک شده
+                                    {% else %}
+                                        لایک
+                                    {% endif %}
+                                </span>
+                                <span id="like-count" class="like-count">{{ like_count }}</span>
+                            </button>
+                        </form>
+                        
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                        
+                        <script>
+                            $(document).ready(function() {
+                                $('#like-button').click(function(event) {
+                                    event.preventDefault();  // از ارسال فرم جلوگیری می‌کند
+                        
+                                    var form = $(this).closest('form');
+                                    var url = form.attr('action');
+                                    var csrfToken = form.find('[name=csrfmiddlewaretoken]').val();
+                        
+                                    $.ajax({
+                                        url: url,
+                                        type: 'POST',
+                                        data: {
+                                            'csrfmiddlewaretoken': csrfToken
+                                        },
+                                        success: function(response) {
+                                            if (response.status === 'liked') {
+                                                $('#like-icon').attr('src', '{{ STATIC_PATH }}images/like/Like.png');
+                                                $('#like-text').text('لایک شده');
+                                            } else if (response.status === 'unliked') {
+                                                $('#like-icon').attr('src', '{{ STATIC_PATH }}images/like/unlike.png');
+                                                $('#like-text').text('لایک');
+                                            }
+                                            $('#like-count').text(response.like_count);  // بروزرسانی تعداد لایک‌ها
+                        
+                                            // اگر کاربر لاگین نباشه، ریدایرکت به صفحه لاگین و سپس به صفحه پست
+                                            if (response.status === 'unauthenticated') {
+                                                window.location.href = response.login_url + "?next=" + response.next_url;
+                                            }
+                                        },
+                                        error: function() {
+                                            alert("خطایی رخ داده است. لطفا دوباره امتحان کنید.");
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        
+                        
+
+                            <span class="views">
+                                <i class="fa fa-eye"></i>  {{ post.view_count }} بازدید
+                            </span>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="col-md-12">
+                            {% include 'include/massages.html' %}
+                            <!--Blog Comments-->
+                            <h3 class="comment-title">نظرات</h3>
+                            {% if comment %}
+                                {% for comen in comment %}
+                                <ul class="post-comment">
+                                    <li>
+                                        {% if comen.user.avatar %}
+                                            <img src="{{comen.user.avatar.url}}" alt="">
+                                        {% else %}
+                                            <img src="{{STATIC_PATH}}images/comment-authors/profile.jpg" alt="">
+                                        {% endif %}
+                                        <div class="comment-info">
+                                            <h3 style="display: flex; align-items: center; font-size: 16px; flex-direction: row-reverse;">
+                                                {{ comen.user.full_name }}
+                                                {% if comen.user.is_superuser %}
+                                                    <span class="badge badge-danger" style="font-size: 11px; font-weight: bold; margin-left: 8px; padding: 3px 12px; border-radius: 4px; background-color: #ff2378; color: white; text-transform: uppercase;">
+                                                        🌟 مدیر 🌟
+                                                    </span>
+                                                {% endif %}
+                                            </h3>
+                                            <a href="#" class="reply-link">پاسخ</a>
+                                            <span>{{comen.jpublish}}</span>
+                                            <p>{{comen.content}}</p>
+                            
+                                            <!-- فرم پاسخ مخفی: زیر کامنت اصلی -->
+                                            <div class="reply-form" style="display: none;">
+                                                <form class="col-md-12 contact-form" action="{% url 'blog:reply_comment' post.id comen.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            {{reply_form.as_p}}
+                                                        </div>
+                                                        <div class="col-md-12 text-center pt-30">
+                                                            <input id="submit" class="main-btn" type="submit" value="ارسال پاسخ">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                            
+                                            <!-- دکمه نمایش پاسخ‌ها -->
+                                            {% with replies=comen.replies.all %}
+                                                {% if replies %}
+                                                    <button class="toggle-replies-btn  main-btn">👀 دیدن پاسخ‌ها</button>
+                                                    <div class="reply-comment" style="display: none;">
+                                                        <ul>
+                                                            {% for reply in replies %}
+                                                                {% if reply.confirme %}
+                                                                <li class="userphoto">
+                                                                    {% if reply.user.avatar %}
+                                                                        <img src="{{reply.user.avatar.url}}" alt="">
+                                                                    {% else %}
+                                                                        <img src="{{STATIC_PATH}}images/comment-authors/profile.jpg" alt="">
+                                                                    {% endif %}
+                                                                    <div class="comment-info">
+                                                                        <h3 style="display: flex; align-items: center; font-size: 16px; flex-direction: row-reverse;">
+                                                                            {{ reply.user.full_name }}
+                                                                            {% if reply.user.is_superuser %}
+                                                                                <span class="badge badge-danger" style="font-size: 11px; font-weight: bold; margin-left: 8px; padding: 3px 12px; border-radius: 4px; background-color: #ff2378; color: white; text-transform: uppercase;">
+                                                                                    🌟 مدیر 🌟
+                                                                                </span>
+                                                                            {% endif %}
+                                                                        </h3>
+                                                                        <span>{{reply.jpublish}}</span>
+                                                                        <p>{{reply.content}}</p>
+                                                                    </div>
+                                                                </li>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </li>
+                                </ul>
+                                {% endfor %}
+                            {% else %}
+                                <p>هی! هنوز هیچ کامنتی نیست. اولین نفر باش که نظر می‌ذاری! 😊</p>
+                            {% endif %}
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const toggleButtons = document.querySelectorAll('.toggle-replies-btn');
+                                    toggleButtons.forEach(btn => {
+                                        btn.addEventListener('click', function() {
+                                            const replyBox = this.nextElementSibling;
+                                            if (replyBox.style.display === "none" || replyBox.style.display === "") {
+                                                replyBox.style.display = "block";
+                                                this.textContent = "❌ بستن پاسخ‌ها";
+                                            } else {
+                                                replyBox.style.display = "none";
+                                                this.textContent = "👀 دیدن پاسخ‌ها";
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                                                        
+                                                        
+                            
+  
+                             
+                                <script>
+document.querySelectorAll('.reply-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const comment = this.closest('.comment-info');
+        const form = comment.querySelector('.reply-form');
+
+        // بستن بقیه فرم‌ها
+        document.querySelectorAll('.reply-form').forEach(f => {
+            if (f !== form) f.style.display = 'none';
+        });
+
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    });
+});
+
+
+                                </script>
+                       
+                        <!--Blog Comment Form-->
+                        <form class="col-md-12 contact-form" method="post">
+                            {% csrf_token %}
+                            <h3 class="comment-title">پاسخ دهید</h3>
+                            <div class="row">
+                                <!--Message-->
+                                <div class="col-md-12">
+                                    {{form.as_p}}
+                                </div>
+                           
+                                <div class="col-md-12 text-center pt-30">
+                                    <input id="submit" class="main-btn" type="submit" value="ارسال نظر">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <br>
+    
+
+        
+        
+        
+{% endblock %}
+
