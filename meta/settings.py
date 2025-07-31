@@ -138,9 +138,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.Member'
-AUTHENTICATION_BACKENDS = [
-    'account.authentication.backends.EmailBackend',
-    'django.contrib.auth.backends.ModelBackend']
+# AUTHENTICATION_BACKENDS = [
+#     'account.authentication.backends.EmailBackend',
+#     'django.contrib.auth.backends.ModelBackend']
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
