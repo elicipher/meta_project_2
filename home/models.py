@@ -17,6 +17,7 @@ class Contact(models.Model):
     
     def __str__(self):
         return f'پیام {self.message}'
+    
 
 class AboutUs(models.Model):
 
@@ -26,6 +27,23 @@ class AboutUs(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Social(models.Model):
+    ICON_CHOICES = [
+        ('twitter' , 'twitter'),
+        ('facebook' , 'facebook'),
+        ('instagram' , 'instagram'),
+        ('linkedin' , 'linkedin'),
+        ('github' , 'github'),
+        ('youtube' , 'youtube'),
+        ('telegram' , 'telegram'),
+        ('google-plus' , 'google plus'),
+    ]
+    about_us = models.ForeignKey(AboutUs , on_delete=models.CASCADE , related_name='socials')
+    icon = models.CharField(choices=ICON_CHOICES , max_length=100 , verbose_name='نوع شبکه اجتماعی')
+    link = models.URLField(null=True , blank= True , verbose_name="آدرس شبکه اجتماعی")
+
 
 class Service(models.Model):
     ICON_CHOICES = [

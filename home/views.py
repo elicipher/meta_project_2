@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404
 from django.views import View 
 from django.views.generic.edit import CreateView 
 from .forms import ContactForm
 from django.contrib import messages
-from .models import Contact
+from .models import Contact , AboutUs , Service , StatsSection , Portfolio , Category , TeamMember
 from blog.models import Post
 
 # Create your views here.
@@ -13,10 +13,32 @@ class HomeView(View):
     form_class = ContactForm  
     
 
-    def get(self,requset):
+    def get(self,requset , cat_slug = None):
         post = Post.objects.filter(status = 'p')
+        about_us = AboutUs.objects.first()
+        service = Service.objects.all()
+        stats = StatsSection.objects.all()
+        portfolio = Portfolio.objects.all()
+        categories = Category.objects.all()
+        team_member = TeamMember.objects.all()
         form = self.form_class()
-        return render(requset , self.template_name , {'form':form , 'posts':post})
+        if cat_slug :
+            category = get_object_or_404(Category , slug = cat_slug)
+            portfolio = Portfolio.objects.filter(category = category)
+        
+
+        return render(requset , self.template_name , {
+
+            'form':form , 
+            'posts':post ,
+            'about_us':about_us,
+            'services':service,
+            'stats':stats,
+            'portfolio':portfolio,
+            'category':categories,
+            'team_member':team_member,
+
+            })
     
 class ContactView(CreateView):
     model = Contact
@@ -30,6 +52,6 @@ class ContactView(CreateView):
     
 
 class PortfolioView(View):
-    def get(self , request):
+    def get(self , request , port_slug):
         return render(request , "home/portfolio-detail.html")
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact
+from .models import Contact , Service , StatsSection , Category , Portfolio , TeamMember
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.conf import settings
@@ -7,6 +7,11 @@ from django.utils.html import strip_tags
 # Register your models here.
 
 
+admin.site.register(StatsSection)
+admin.site.register(Service)
+admin.site.register(Category)
+admin.site.register(Portfolio)
+admin.site.register(TeamMember)
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name','email','message','replyed','sended_time',)

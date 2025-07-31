@@ -1,66 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-{% block title %} خانه{% endblock %}
-    <body>
 
-        <!--Preloader-->
-        <div class="preloader">
-            <div class="loader "></div>
-        </div>
-        <!--Preloader-->
-
-        <!--Navbar Start-->
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container">
-                <!-- LOGO -->
-                <a class="navbar-brand logo" href="{% url 'home:home' %}">
-                   الی سایفر
-                </a>
-
-                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="navbar-collapse collapse" id="navbarCollapse">
-                    <ul class="navbar-nav ml-auto">
-                        <!--Nav Links-->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link active" data-scroll-nav="0" >خانه</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-scroll-nav="1" >درباره من</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-scroll-nav="2" >سرویس ها</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-scroll-nav="3">نمونه کارها</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-scroll-nav="4">وبلاگ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-scroll-nav="5">تماس با من</a>
-                        </li>
-                        {% if request.user.is_authenticated %}
-                        <li class="nav-item">
-                            <a href="{% url 'account:user_profile' %}" class="nav-link" >پروفایل</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'account:user_logout' %}" class="nav-link" >خروج</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a href="{% url 'account:user_register' %}" class="nav-link" >ورود / عضویت</a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-            {% include 'include/massages.html' %}
-        </nav>
-        <!--Navbar End-->
-
+{% block title %}
+<title>خانه</title>
+{% endblock %}
+    {% include "include/nav.html"%}
         <!--Home Section Start-->
         <section id="home" class="banner banner-centered" style="background-image: url('{{ STATIC_PATH }}images/background/creative2-banner-b.jpg')" data-stellar-background-ratio=".7" data-scroll-index="0">
                 <!--Banner Content-->
@@ -93,30 +37,26 @@
                     <div class="col-lg-5 col-md-6">
                         <!--About Image-->
                         <div class="about-img">
-                            <img src="{{ STATIC_PATH }}images/EliCipher.jpg" alt="">
+                            {% if about_us.image %}
+                            <img src="{{about_us.image.url}}" alt="">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-6">
                         <!--About Content-->
                         <div class="about-content">
                             <div class="about-heading">
-                                <h2>درباره من</h2>
-                                <span>آرتیست و توسعه‌دهنده وب</span>
+                                <h2>درباره ما</h2>
+                                <span>{{about_us.title}}</span>
                                 </div>
-                                <p>من الی‌ام، یه دانشجوی مهندسی نرم‌افزار که عاشق دنیای طراحی و برنامه‌نویسیه. هم با قلم و رنگ کار می‌کنم، هم با کد و دیباگ! اینجا جاییه برای اشتراک هنر، تجربه و کدهایی که بهم زندگی می‌دن :)</p>
-                                <p>اگه به طراحی، وب یا هنر دیجیتال علاقه‌مندی، با هم کلی حرف واسه گفتن داریم!</p>
-                                
+                                <p>{{about_us.description}}</p>                                
                             <!--About Social Icons-->
+                           
                             <div class="social-icons">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-dribbble"></i></a>
-                                <a href="#"><i class="fa fa-google-plus"></i></a>
-                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                                 {% for ico in about_us.social.all %}
+                                <a href="{{ico.link}}"><i class="fa fa-{{ico.icon}}"></i></a>
+                                {% endfor %}
                             </div>
-                            <span class="about-button">
-                                <a class="main-btn" href="#">دانلود رزومه</a>
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -131,42 +71,23 @@
                     <div class="col">
                         <div class="heading text-center">
                             <h6>سرویس ها</h6>
-                            <h2>کاری که من می توانم انجام دهم</h2>
+                            <h2>خدماتی که ارائه می دهیم</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                {% for service in services %}
                     <div class="col-md-4">
                         <!--Service Item-->
                         <div class="service-item">
                             <span class="icon">
-                                <i class="fa fa-book"></i>
+                                <i class="fa fa-{{service.icon}}"></i>
                             </span>
-                            <h4>طراحی دیجیتالی</h4>
-                            <p>ارائه خدمات طراحی دیجیتال با تمرکز بر خلق آثار خلاقانه، از طراحی کاراکتر و محیط گرفته تا تصویرسازی‌های داستانی، با استفاده از ابزارهای حرفه‌ای دیجیتال آرت.</p>
+                            <h4>{{service.title}}</h4>
+                            <p>{{service.description}}</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <!--Service Item-->
-                        <div class="service-item">
-                            <span class="icon">
-                                <i class="fa fa-globe "></i>
-                            </span>
-                            <h4>توسعه وب</h4>
-                            <p>ارائه خدمات توسعه وب با استفاده از فریم‌ورک قدرتمند Django — سریع، امن و مناسب برای انواع پروژه‌های تحت وب.</p>
-
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <!--Service Item-->
-                        <div class="service-item">
-                            <span class="icon">
-                                <i class="fa fa-film"></i>
-                            </span>
-                            <h4>انیمیشن سازی</h4>
-<p>ارائه خدمات انیمیشن‌سازی دوبعدی با تمرکز بر سبک کارتونی، مناسب برای برندها، محتوای آموزشی، داستان‌های تصویری و پروژه‌های خلاقانه.</p>
-                        </div>
-                    </div>
+                {% endfor %}
                 </div>
             </div>
         </section>
@@ -176,46 +97,18 @@
         <section class="stats pt-100 pb-100" style="background-image: url('{{ STATIC_PATH }}images/background/stats-b.jpg')">
             <div class="container">
                 <div class="row">
+                {% for stat in stats %}
                     <div class="col-lg-3 col-md-6">
                         <!--Stats Item-->
                         <div class="single-stat">
                             <span class="stat-icon">
-                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <i class="fa fa-{{stat.icon}}" aria-hidden="true"></i>
                             </span>
-                            <h2 class="counter" data-count="220">10</h2>
-                            <p>مشتریان خوشحال</p>
+                            <h2 class="counter" data-count="{{stat.value}}">10</h2>
+                            <p>{{stat.title}}</p>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
-                        <!--Stats Item-->
-                        <div class="single-stat">
-                            <span class="stat-icon">
-                                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                            </span>
-                            <h2 class="counter" data-count="700">20</h2>
-                            <p>پروژه های تکمیل شده</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <!--Stats Item-->
-                        <div class="single-stat">
-                            <span class="stat-icon">
-                                <i class="fa fa-bolt" aria-hidden="true"></i>
-                            </span>
-                            <h2 class="counter" data-count="1100">10</h2>
-                            <p>خطوط کد</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <!--Stats Item-->
-                        <div class="single-stat">
-                            <span class="stat-icon">
-                                <i class="fa fa-trophy" aria-hidden="true"></i>
-                            </span>
-                            <h2 class="counter" data-count="160">15</h2>
-                            <p>جوایز به دست آمده</p>
-                        </div>
-                    </div>
+                {% endfor %}
                 </div>
             </div>
         </section>
@@ -233,113 +126,35 @@
                         </div>
                         <div class="portfolio-filter text-center">
                             <ul>
-                                <li class="sel-item" data-filter="*">همه</li>
-                                <li data-filter=".application">انیمیشن</li>
-                                /
-                                <li data-filter=".development">نقاشی</li>
+                                <a href="{% url 'home:home' %}" class="btn btn-dark" style="-webkit-text-fill-color: aliceblue;">همه</a>
+                                {% for cat in category %}
+                                <a  href="{% url 'home:home' cat_slug=cat.slug %}" class="btn btn-dark" style="-webkit-text-fill-color: aliceblue;">{{cat.title}}</a>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="row portfolio-items">
-
+                {% for por in portfolio %}
                     <!--Portfolio Item-->
                     <div class="col-lg-4 col-md-6 item development">
                         <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-1.png" alt="">
+                            
+                            <img src="{{por.image.url}}" alt="">
                             <div class="item-overlay">
-                                <h6>نقاشی</h6>
+                                <h6>{{por.title}}</h6>
+                                <div class="icons">
+                                    <span class="icon">
+                                        <a href="{% url 'home:portfolio-detail' por.slug %}">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-2.png" alt="">
-                            <div class="item-overlay">
-                                <h6>نقاشی</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-3.png" alt="">
-                            <div class="item-overlay">
-                                <h6>نقاشی</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-4.png" alt="">
-                            <div class="item-overlay">
-                                <h6>نقاشی</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-5.png" alt="">
-                            <div class="item-overlay">
-                                <h6>نقاشی</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            <img src="{{ STATIC_PATH }}images/portfolio/art-6.png" alt="">
-                            <div class="item-overlay">
-                                <h6>نقاشی</h6>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item application">
-                        <div class="item-content">
-                            <!-- پخش ویدیو داخلی -->
-                            <video width="100%" height="auto" controls>
-                                <source src="{{ STATIC_PATH }}images/portfolio/video-1.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="item-overlay">
-                                <h6>انیمیشن</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item application">
-                        <div class="item-content">
-                            <!-- پخش ویدیو داخلی -->
-                            <video width="100%" height="auto" controls>
-                                {% comment %} <source src="{{ STATIC_PATH }}images/portfolio/video-2.mp4" type="video/mp4"> {% endcomment %}
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="item-overlay">
-                                <h6>انیمیشن</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item application">
-                        <div class="item-content">
-                            <!-- پخش ویدیو داخلی -->
-                            <video width="100%" height="auto" controls>
-                                {% comment %} <source src="{{ STATIC_PATH }}images/portfolio/video-3.mp4" type="video/mp4"> {% endcomment %}
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="item-overlay">
-                                <h6>انیمیشن</h6>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-
+                {% endfor %}
+                
                 </div>
             </div>
         </section>
@@ -395,41 +210,28 @@
             </div>
         </section>
         <!--Blog Section End-->
-
+        
         <!--Testimonials Section Start-->
         <section class="testimonials pt-100 pb-100" style="background-image: url('{{ STATIC_PATH }}images/background/banner.jpg')">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
                         <div class="owl-carousel owl-theme text-center">
-                            <h1 style="color: aliceblue;"> ✨ارتباط با من✨ </h1>
+                            {% for member in team_member %}
                             <!--Testimonials Item-->
-                            <!-- <div class="testimonial-item">
+                            <div class="testimonial-item">
                                 <div class="author-img">
+                                    {% if member.image %}
+                                    <img src="{{member.image.url}}" alt="">
+                                    {% else %}
                                     <img src="{{ STATIC_PATH }}images/testimonial/img-1.jpg" alt="">
+                                    {% endif %}
                                 </div>
-                                <h5>آدام همتی</h5>
-                                <span>کارگردان خلاق</span>
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد </p>
-                            </div> -->
-                            <!--Testimonials Item-->
-                            <!-- <div class="testimonial-item">
-                                <div class="author-img">
-                                    <img src="{{ STATIC_PATH }}images/testimonial/img-1.jpg" alt="">
-                                </div>
-                                <h5>آدام همتی</h5>
-                                <span>کارگردان خلاق</span>
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد </p>
-                            </div> -->
-                            <!--Testimonials Item-->
-                            <!-- <div class="testimonial-item">
-                                <div class="author-img">
-                                    <img src="{{ STATIC_PATH }}images/testimonial/img-1.jpg" alt="">
-                                </div>
-                                <h5>آدام همتی</h5>
-                                <span>کارگردان خلاق</span>
-                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد </p>
-                            </div> -->
+                                <h5>{{member.name}}</h5>
+                                <span>{{member.role}}</span>
+                                <p>{{member.bio}}</p>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
