@@ -30,6 +30,11 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link" data-scroll-nav="5">تماس با من</a>
                         </li>
+                        {% if request.user.is_admin %}
+                        <li class="nav-item">
+                            <a href="{% url 'dashboard:dashboard' %}" class="nav-link" >داشبورد</a>
+                        </li>
+                        {% endif %}
                         {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             <a href="{% url 'account:user_profile' %}" class="nav-link" >پروفایل</a>

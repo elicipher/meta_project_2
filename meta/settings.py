@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'account.apps.AccountConfig',
     "django_prose_editor",
-    'slugify'
+    'slugify',
+    'dashboard.apps.DashboardConfig',
+
     
 ]
 
@@ -138,9 +140,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.Member'
-# AUTHENTICATION_BACKENDS = [
-#     'account.authentication.backends.EmailBackend',
-#     'django.contrib.auth.backends.ModelBackend']
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
