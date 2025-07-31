@@ -29,5 +29,7 @@ class ContactView(CreateView):
         return super().form_valid(form)
     
 
-
+class PortfolioView(View):
+    def get(self , request):
+        return render(request , "home/portfolio-detail.html")
 

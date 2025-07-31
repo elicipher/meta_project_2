@@ -17,3 +17,103 @@ class Contact(models.Model):
     
     def __str__(self):
         return f'پیام {self.message}'
+
+class AboutUs(models.Model):
+
+    title = models.CharField(max_length=200 , verbose_name= "عنوان")
+    image = models.ImageField(upload_to='about-us/')
+    description = models.TextField(verbose_name="توضیحات")
+
+    def __str__(self):
+        return self.title
+
+class Service(models.Model):
+    ICON_CHOICES = [
+        ('globe','کره'),
+        ('pencil','مداد'),
+        ('laptop','لپ تاپ'),
+        ('film','فیلم'),
+        ('user','کاربر'),
+        ('handshake-o','دست دادن'),
+        ('book','کتاب'),
+        ('line-chart','چارت'),
+        ('graduation-cap','کلاه فارغ التحصیل'),
+        ('gears','چرخ دنده'),
+        ('mobile','موبایل'),
+        ('support','ساپورت'),
+        ('rocket','موشک'),
+    ]
+
+    title = models.CharField(max_length=120 , verbose_name= "عنوان سرویس")
+    icon = models.CharField(choices=ICON_CHOICES , default='globe' ,max_length=100, verbose_name="آیکن")
+    description = models.CharField(max_length=300 , verbose_name= "توضیحات")
+
+    def __str__(self):
+        return self.title
+    
+class StatsSection(models.Model):
+    ICON_CHOICES = [
+        ('globe','کره'),
+        ('users','کاربران'),
+        ('thumbs-up','لایک'),
+        ('trophy','جام'),
+        ('edit','ویرایش'),
+        ('gift','جایزه'),
+        ('graduation-cap','کلاه فارغ التحصیل'),
+        ('code','کد'),
+        ('bolt','صاعقه'),
+    ]
+    title = models.CharField(max_length=120 , verbose_name="عنوان آمار")
+    icon = models.CharField(choices=ICON_CHOICES , default='globe' ,max_length=100, verbose_name="آیکن")
+    value = models.PositiveIntegerField(verbose_name="مقدار")
+
+    def __str__(self):
+        return self.title
+     
+class Category(models.Model):
+    title = models.CharField(max_length=100 , verbose_name='عنوان دسته بندی')
+    slug = models.CharField(max_length=100 , unique= True , verbose_name= 'آدرس دسته بندی')
+
+    class Meta:
+        verbose_name = 'دسته‌بندی'
+        verbose_name_plural = 'دسته‌بندی‌ها'
+
+    def __str__(self):
+        return self.title
+
+
+
+class Portfolio(models.Model):
+
+    title = models.CharField(max_length=150, verbose_name='عنوان پروژه')
+    slug = models.CharField(max_length=100, verbose_name='اسلاگ')
+    category = models.ForeignKey(Category , on_delete= models.CASCADE , related_name= 'category', verbose_name='دسته‌بندی')
+    employer = models.CharField(max_length=150, verbose_name='کارفرما')
+    history = models.DateField(verbose_name='تاریخ انجام')
+    address_project = models.CharField(max_length=200, verbose_name='آدرس پروژه')
+    description=models.TextField(verbose_name='توضیحات')
+    image = models.ImageField(upload_to = 'portfolio/', verbose_name='تصویر')
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    updated = models.DateTimeField(auto_now=True, verbose_name='تاریخ بروزرسانی')
+
+    class Meta:
+        verbose_name = 'نمونه‌کار'
+        verbose_name_plural = 'نمونه‌کارها'
+
+    def __str__(self):
+        return self.title
+    
+class TeamMember(models.Model):
+
+    name = models.CharField(verbose_name = 'نام کاربر', max_length=100)
+    role = models.CharField(verbose_name = 'نقش', max_length=100)
+    bio = models.TextField(verbose_name = 'بیوگرافی')
+    image = models.ImageField(upload_to = 'team_profile/',null = True , blank = True  , verbose_name='تصویر کاربر')
+
+    class Meta:
+        verbose_name = 'عضو تیم'
+        verbose_name_plural = 'اعضای تیم'
+
+    def __str__(self):
+        return self.name
