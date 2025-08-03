@@ -48,7 +48,7 @@
       <td><a href="{% url 'dashboard:contact_delete' contact.pk %}" class="btn btn-danger">حذف</a></td>
       <td><a href="{% url 'dashboard:contact_reply' contact.pk %}" class="btn btn-warning">پاسخ دادن</a></td>
       {% empty %}
-      <p class="alert alert-blue">خالی است</p>
+      <p class="alert alert-blue"> هنوز پیامی ایجاد نشده</p>
     </tr>
   {% endfor %}
   </tbody>

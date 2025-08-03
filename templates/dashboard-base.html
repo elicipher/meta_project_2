@@ -449,10 +449,16 @@
 
                     </div>
                     <!-- USER INFO - END -->
-
+                      
 
 
                     <ul class='wraplist'>	
+                          <li class=""> 
+                            <a href="{% url 'home:home' %}">
+                                <i class="fa fa-globe fa-x2"></i>
+                                <span class="title" > مشاهده سایت</span>
+                            </a>
+                        </li>
                        <li class=""> 
                             <a href="{% url 'dashboard:team_list' %}">
                                 <i class="fa fa-users"></i>
@@ -502,6 +508,25 @@
             
                             </ul>
                         </li>
+                        <li class=""> 
+                            <a href="javascript:;">
+                                <i class="fa fa-folder"></i>
+                                <span class="title">وبلاگ</span>
+                                <span class="arrow "></span>
+                            </a>
+                            <ul class="sub-menu" >
+                                <li>
+                                    <a class="" href="{% url 'dashboard:post_list' %}">پست ها</a>
+                                </li>
+                                <li>
+                                    <a class="" href="{% url 'dashboard:comment_list' %}">نظرات</a>
+                                </li>
+            
+                            </ul>
+                        </li>
+
+                     
+
                         
                      
                 </div>

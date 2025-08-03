@@ -39,11 +39,24 @@ home_urls = [
 
     
 ]
+blog_urls = [
+    path('post/list/',views.PostListView.as_view(),name="post_list"),
+    path('post/create/',views.PostCreateView.as_view(),name="post_create"),
+    path('post/delete/<int:pk>/',views.PostDeleteView.as_view(),name="post_delete"),
+    path('post/update/<int:pk>/',views.PostUpdateView.as_view(),name="post_update"),
 
+
+    path('comment/list/',views.CommentListView.as_view(), name="comment_list"),
+    path('comment/delete/<int:pk>/',views.CommentDeleteView.as_view(), name="comment_delete"),
+    path('comment/reply/<int:comment_id>/',views.CommentReplyView.as_view(), name="comment_reply"),
+    path('comment/detail/<int:comment_id>/',views.CommentDetailView.as_view(), name="comment_detail"),
+   
+]
 
 urlpatterns = [
 
     path('home/app/', include(home_urls)),
+    path('blog/app/', include(blog_urls)),
     path('',views.DashboardView.as_view(),name="dashboard"),
 
 ]

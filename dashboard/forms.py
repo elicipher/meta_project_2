@@ -5,6 +5,9 @@ from home.models import Portfolio , TeamMember
 from jalali_date.fields import JalaliDateField
 from jalali_date.widgets import AdminJalaliDateWidget
 from django.db import models
+from blog.models import Post , Comment
+from django_prose_editor.fields import ProseEditorField
+
 
 SocialLinkFormSet = inlineformset_factory(
     AboutUs,
@@ -57,3 +60,29 @@ class ContactForm(forms.ModelForm):
                 widget=widget
  
             )
+
+
+class PostForm(forms.ModelForm):
+    description = ProseEditorField()
+    class Meta:
+        model = Post
+        fields = '__all__'
+
+
+
+
+class CommentReplyForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        labels = {
+            'content': 'متن پاسخ',
+        }
+
+class CommentConfirmeForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['confirme']
+        labels = {
+            'confirme': 'تایید',
+        }

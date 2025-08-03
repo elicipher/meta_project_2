@@ -1,15 +1,16 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect , get_object_or_404
 from django.views import View
 from home.models import AboutUs , Service , StatsSection , Portfolio  ,Category ,  TeamMember , Contact
-from django.views.generic import CreateView , DeleteView , ListView , UpdateView
+from django.views.generic import CreateView , DeleteView , ListView , UpdateView 
 from django.urls import reverse_lazy
 from .mixins import CancelUrlMixin , SuperUserOnlyMixin , DeleteSuccessMessageMixin , SuccessMessageMixin
-from .forms import SocialLinkFormSet , PortfolioForm , SocialTeamMemberFormset , ContactForm
+from .forms import SocialLinkFormSet , PortfolioForm , SocialTeamMemberFormset , ContactForm , PostForm , CommentReplyForm , CommentConfirmeForm
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from blog.models import Post  , Comment
+from django.contrib import messages
 
 # Create your views here.
 
@@ -255,4 +256,79 @@ class ContactReplyView(UpdateView ):
         plain_message = strip_tags(html_message)
 
         send_mail(subject ,plain_message, from_email , [to_email] ,html_message=html_message)
+
+# Post --------------------------------------
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog-dashboard/post_list.html'
+    context_object_name = 'posts'
+    
+class PostCreateView(SuccessMessageMixin,CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'shared/create.html'
+    success_url = reverse_lazy("dashboard:post_list")
+
+
+class PostDeleteView(DeleteSuccessMessageMixin,DeleteView):
+    model = Post
+    template_name = 'shared/delete.html'
+    success_url = reverse_lazy("dashboard:post_list")
+
+class PostUpdateView(SuccessMessageMixin,UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'shared/update.html'
+    success_url = reverse_lazy("dashboard:post_list")
+
+# Comments --------------------------------------------
+
+class CommentListView(ListView):
+    model = Comment
+    template_name = 'blog-dashboard/comment_list.html'
+    context_object_name = 'comments'
+
+class CommentDeleteView(DeleteSuccessMessageMixin,DeleteView):
+    model = Comment
+    template_name = 'shared/delete.html'
+    success_url = reverse_lazy("dashboard:comment_list")
+
+class CommentReplyView(View):
+    template_name = 'blog-dashboard/comment_reply.html'
+    def get(self , request ,comment_id ):
+        comment = get_object_or_404(Comment , pk = comment_id)
+        form = CommentReplyForm
+        return render(request , self.template_name , {'form':form , 'comment':comment})
+    def post(self, request, comment_id):
+        parent = get_object_or_404(Comment, id=comment_id)
+        post = parent.post
+        form = CommentReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.user = request.user
+            reply.post = post
+            reply.is_reply = True
+            reply.save()
+            messages.success(request, "پاسخ با موفقیت ثبت شد 🌱")
+            return redirect('dashboard:comment_list')  # یا هر صفحه‌ای که لیست کامنت‌هاست
+        return render(request, self.template_name , {'form': form, 'comment': parent})
+
+class CommentDetailView(View):
+    template_name = 'blog-dashboard/comment_detail.html'
+    form_class = CommentConfirmeForm
+    def get(self , request , comment_id):
+        comment = get_object_or_404(Comment , pk = comment_id)
+        form = self.form_class(instance=comment)
+        return render(request , self.template_name , {"form":form,"comment":comment})
+
+    def post(self , request , comment_id = None):
+        comment = get_object_or_404(Comment, pk=comment_id)
+        form = self.form_class(request.POST , instance=comment)
+        if form.is_valid():
+            form.save()
+            comment.save()
+            messages.success(request , "نظر با موفقیت تایید شد", "success")
+            return redirect("dashboard:comment_list")
+        return render(request , self.template_name , {"form":form,"comment":comment})
 

@@ -32,6 +32,24 @@
 
       <button type="submit" class="btn btn-primary mt-3">ذخیره</button>
     </form>
+          <script>
+
+function slugify(text) {
+    return text.toString()
+        .trim()
+        .replace(/\s+/g, '-')  // فاصله‌ها رو با - جایگزین کن
+        .replace(/[^\u0600-\u06FFa-zA-Z0-9\-]+/g, '') // فقط حروف فارسی، انگلیسی، اعداد و -
+        .replace(/-+/g, '-')   // چند خط تیره پشت هم یکی بشه
+        .replace(/^-+|-+$/g, ''); // خط تیره اول و آخر حذف
+}
+
+    const titleInput = document.getElementById('{{form.title.id_for_label}}');
+    const slugInput = document.getElementById('{{form.slug.id_for_label}}');
+
+    titleInput.addEventListener('input', function() {
+        slugInput.value = slugify(this.value);
+    });
+    </script>
   </div>
 </div>
 {% endblock %}

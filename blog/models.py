@@ -91,7 +91,7 @@ class Comment(models.Model):
         verbose_name = "نظر"
         verbose_name_plural = "نظرات" 
     def __str__(self):
-        return f'کامنت {self.user} : "{self.content}'
+        return f'{self.user} : "{self.content}'
     
    
     

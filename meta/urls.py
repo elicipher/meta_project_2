@@ -21,8 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/' , include('account.urls',namespace ='account')),
     path('dashboard/' , include('dashboard.urls',namespace ='dashboard')),
+       path('' , include('blog.urls',namespace = 'blog')),
     path('', include('home.urls' , namespace='home')),
-    path('' , include('blog.urls',namespace = 'blog')),
+ 
 
 ]
 from django.conf import settings

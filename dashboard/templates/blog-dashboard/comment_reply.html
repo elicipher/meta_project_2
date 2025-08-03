@@ -2,16 +2,22 @@
 {% load widget_tweaks %}
 {% load jalali_tags %}
 {% block title %}
-  <h1 class="title text-right">ایجاد </h1> 
-{% endblock %}
-{% block head_title %}
-
+  <h1 class="title text-right">پاسخ </h1> 
 {% endblock %}
 
 {% block admin_content %}
 <div class="container mt-4" style="direction: rtl; text-align: right;">
   <div class="card shadow-sm p-4">
-    <form method="post" enctype="multipart/form-data">
+
+    
+    <div class="mb-4 border rounded p-3 bg-light">
+      <p class="mb-2"><strong>کاربر:</strong></p>
+      <p class="mb-0 text-muted" style="white-space: pre-line">{{ comment.user }}</p>
+      <p class="mb-0"><strong>متن کامنت:</strong></p>
+      <p class="mb-0 text-muted" style="white-space: pre-line">{{ comment.content }}</p>
+    </div>
+
+    <form method="post">
       {% csrf_token %}
       {{ form.media }}
 
@@ -35,24 +41,6 @@
 
       <button type="submit" class="btn btn-primary mt-3">ذخیره</button>
     </form>
-      <script>
-function slugify(text) {
-    return text.toString()
-        .trim()
-        .replace(/\s+/g, '-')  // فاصله‌ها رو با - جایگزین کن
-        .replace(/[^\u0600-\u06FFa-zA-Z0-9\-]+/g, '') // فقط حروف فارسی، انگلیسی، اعداد و -
-        .replace(/-+/g, '-')   // چند خط تیره پشت هم یکی بشه
-        .replace(/^-+|-+$/g, ''); // خط تیره اول و آخر حذف
-}
-
-
-    const titleInput = document.getElementById('{{form.title.id_for_label}}');
-    const slugInput = document.getElementById('{{form.slug.id_for_label}}');
-
-    titleInput.addEventListener('input', function() {
-        slugInput.value = slugify(this.value);
-    });
-    </script>
   </div>
 </div>
 {% endblock %}

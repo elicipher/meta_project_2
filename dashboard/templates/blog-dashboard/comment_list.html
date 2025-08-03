@@ -1,0 +1,61 @@
+{% extends 'dashboard-base.html' %}
+{% load jalali_tags %}
+
+
+ {% block title %}
+    <h1 class="title">نظرات</h1> 
+ {% endblock %}
+
+{% include 'include\massages.html' %}
+
+{% block admin_content %}
+
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+
+<br>
+<br>
+  <table class="table table-dark table-striped text-right">
+      
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">کاربر</th>
+      <th scope="col">پست مورد نظر</th>
+      <th scope="col">نظر</th>
+      <th scope="col">تایید شده ؟</th>
+      <th scope="col">پاسخ به</th>
+      <th scope="col">تاریخ ارسال</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for comment in comments %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{comment.user.full_name}}</td>
+      <td>{{comment.post}}</td>
+      <td>{{comment.content|truncatechars:50}}</td>
+     {% if comment.confirme %}
+       <td style="color:green;">تایید شده</td>
+      {% else %}
+       <td style="color:red;">تایید نشده</td>
+      {% endif %}
+      {% if comment.is_reply %}
+      <td>{{comment.reply}}</a></td>
+      {% else %}
+      <td>پاسخ نیست</td>
+      {% endif %}
+      <td>{{comment.created|to_jalali}}</td>
+      <td class="fa fa-{{comment.icon}}"></td>
+      <td><a class="btn btn-danger" href="{% url 'dashboard:comment_delete' comment.pk %}">حذف</a></td>
+      <td><a class="btn btn-warning" href="{% url 'dashboard:comment_reply' comment.pk %}">پاسخ</a></td>
+      <td><a class="btn btn-primary" href="{% url 'dashboard:comment_detail' comment.pk %}">باز کردن</a></td>
+    </tr>
+    {% empty %}
+          <p class="alert alert-blue">هنوز پستی گذاشته نشده</p>
+  {% endfor %}
+  </tbody>
+</table>
+  
+
+{% endblock %}

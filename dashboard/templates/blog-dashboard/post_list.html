@@ -1,0 +1,59 @@
+{% extends 'dashboard-base.html' %}
+
+
+ {% block title %}
+    <h1 class="title">پست ها</h1> 
+ {% endblock %}
+
+{% include 'include\massages.html' %}
+
+{% block admin_content %}
+
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+<a href="{% url 'dashboard:post_create' %}" class="btn btn-primary">ایجاد پست </a>
+
+<br>
+<br>
+  <table class="table table-dark table-striped text-right">
+      
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">عنوان</th>
+      <th scope="col">وضعیت</th>
+      <th scope="col">تعداد لایک ها</th>
+      <th scope="col">تعداد ویو</th>
+      <th scope="col">نویسنده</th>
+      <th scope="col">تاریخ ساخت</th>
+      <th scope="col">تاریخ انتشار</th>
+      <th scope="col">تاریخ ویرایش</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for post in posts %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{post.title}}</td>
+     {% if post.status %}
+       <td style="color:green;">منتشر شده</td>
+      {% else %}
+       <td style="color:red;">پیش نویس</td>
+      {% endif %}
+      <td>{{post.like_count}}</td>
+      <td>{{post.view_count}}</td>
+      <td>{{post.author}}</td>
+      <td>{{post.created}}</td>
+      <td>{{post.jpublish}}</td>
+      <td>{{post.updated}}</td>
+      <td class="fa fa-{{post.icon}}"></td>
+      <td><a class="btn btn-danger" href="{% url 'dashboard:post_delete' post.pk %}">حذف</a></td>
+      <td><a  class="btn btn-warning" href="{% url 'dashboard:post_update' post.pk %}">ویرایش</a></td>
+    </tr>
+    {% empty %}
+          <p class="alert alert-blue">هنوز پستی گذاشته نشده</p>
+  {% endfor %}
+  </tbody>
+</table>
+  
+
+{% endblock %}

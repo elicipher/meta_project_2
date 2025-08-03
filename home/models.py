@@ -1,4 +1,5 @@
 from django.db import models
+from slugify import slugify
 
 # Create your models here.
 class Contact(models.Model):
@@ -107,7 +108,7 @@ class Category(models.Model):
 class Portfolio(models.Model):
 
     title = models.CharField(max_length=150, verbose_name='عنوان پروژه')
-    slug = models.CharField(max_length=100, verbose_name='اسلاگ')
+    slug = models.SlugField(max_length=100, unique=True,blank=True,allow_unicode=True , verbose_name='آدرس')
     category = models.ForeignKey(Category , on_delete= models.CASCADE , related_name= 'category', verbose_name='دسته‌بندی')
     employer = models.CharField(max_length=150, verbose_name='کارفرما')
     history = models.DateField(verbose_name='تاریخ انجام')
@@ -121,6 +122,11 @@ class Portfolio(models.Model):
     class Meta:
         verbose_name = 'نمونه‌کار'
         verbose_name_plural = 'نمونه‌کارها'
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, separator='-', lowercase=False, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
