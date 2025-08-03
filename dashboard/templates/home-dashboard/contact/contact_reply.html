@@ -1,0 +1,31 @@
+{% extends 'dashboard-base.html' %}
+{% load jalali_tags %}
+
+{% load widget_tweaks %}
+
+
+ {% block title %}
+    <h1 class="title">ارسال پاسخ</h1> 
+ {% endblock %}
+
+{% block admin_content %}
+<div class="container mt-4" style="direction: rtl; text-align: right;">
+  <div class="card shadow-sm p-4">
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {{ formset.management_form }}
+  {% for subform in formset %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+      {{ subform.as_p }}
+
+    </div>
+  {% endfor %}
+
+  <button type="submit">ذخیره</button>
+</form>
+  </div>
+  </div>
+
+{% endblock %}

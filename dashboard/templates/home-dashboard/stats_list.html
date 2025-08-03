@@ -1,0 +1,42 @@
+{% extends 'dashboard-base.html' %}
+
+
+ {% block title %}
+    <h1 class="title">دستاورد ها</h1> 
+ {% endblock %}
+
+{% include 'include\massages.html' %}
+
+{% block admin_content %}
+
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+<a href="{% url 'dashboard:stats_create' %}" class="btn btn-primary">ایجاد دستاورد </a>
+
+<br>
+<br>
+  <table class="table table-dark table-striped text-right">
+      
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">عنوان</th>
+      <th scope="col">آیکن</th>
+      <th scope="col">مقدار</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for stats in statss %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{stats.title}}</td>
+      <td class="fa fa-{{stats.icon}}"></td>
+      <td>{{stats.value}}</td>
+      <td><a class="btn btn-danger" href="{% url 'dashboard:stats_delete' stats.pk %}">حذف</a></td>
+      <td><a  class="btn btn-warning" href="{% url 'dashboard:stats_update' stats.pk %}">ویرایش</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  
+
+{% endblock %}

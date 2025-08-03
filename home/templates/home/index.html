@@ -54,8 +54,8 @@
                             <!--About Social Icons-->
                            
                             <div class="social-icons">
-                                 {% for ico in about_us.social.all %}
-                                <a href="{{ico.link}}"><i class="fa fa-{{ico.icon}}"></i></a>
+                                 {% for ico in about_us.socials.all %}
+                                    <a href="{{ico.link}}"><i class="fa fa-{{ico.icon}}"></i></a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                     <div class="col">
                         <div class="heading text-center">
                             <h6>نمونه کارها</h6>
-                            <h2>کاری که انجام دادم</h2>
+                            <h2>نمایش توانمندی‌ها</h2>
                         </div>
                         <div class="portfolio-filter text-center">
                             <ul>
@@ -211,11 +211,15 @@
             </div>
         </section>
         <!--Blog Section End-->
-        
+      
         <!--Testimonials Section Start-->
         <section class="testimonials pt-100 pb-100" style="background-image: url('{{ STATIC_PATH }}images/background/banner.jpg')">
             <div class="container">
-                <div class="row">
+                      <div class="heading text-center" style="color: white;" >
+                           
+                            <h6 class="text-light" >اعضای تیم</h6>
+                             <h2 class="text-white">با اعضای تیم ما آشنا شوید</h2>
+            </div>
                     <div class="col-lg-10 offset-lg-1">
                         <div class="owl-carousel owl-theme text-center">
                             {% for member in team_member %}
@@ -231,6 +235,11 @@
                                 <h5>{{member.name}}</h5>
                                 <span>{{member.role}}</span>
                                 <p>{{member.bio}}</p>
+                                {% for ico in member.icons.all %}
+                                <div class="d-inline-flex justify-content-center align-items-center rounded-circle bg-light text-dark" style="width: 35px; height: 35px;">
+                                    <a href="{{ico.link}}"><i  class="fa fa-{{ico.icon}} "></i></a>
+                                </div>
+                                {% endfor %}
                             </div>
                             {% endfor %}
                         </div>

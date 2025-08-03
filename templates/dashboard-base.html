@@ -353,13 +353,14 @@
                     </ul>
                 </div>		
                 <div class='pull-right'>
-                    <ul class="info-menu right-links list-inline list-unstyled">
+                   
+  <ul class="info-menu right-links list-inline list-unstyled">
                         <li class="profile">
                             <a href="#" data-toggle="dropdown" class="toggle">
-                                {% if request.user.profile %}
-                                    <img src="{{request.user.profile.url }}" alt="user-image" class="img-circle img-inline">
+                                {% if request.user.avatar %}
+                                    <img src="{{request.user.avatar.url }}" alt="user-image" class="img-circle img-inline">
                                 {% else %}
-                                    <img src="{{ STATIC_PATH }}img/defult_profile.jpg" alt="user-image" class="img-circle img-inline">
+                                    <img src="{{ STATIC_PATH }}images/defult_profile.jpg" alt="user-image" class="img-circle img-inline">
                                 {% endif %}
                                 <span>{{request.user.full_name}} <i class="fa fa-angle-down"></i></span>
 
@@ -372,7 +373,7 @@
                                     </a>
                                 </li> -->
                                 <li>
-                                    <a href="{% url 'dashboard:admin_profile' %}">
+                                    <a href="">
                                         <i class="fa fa-user"></i>
                                         پروفایل
                                     </a>
@@ -384,12 +385,14 @@
                                     </a>
                                 </li> -->
                                 <li class="#last">
-                                    <a href="{% url 'account:logout_user' %}">
+                                    <a href="">
                                         <i class="fa fa-lock"></i>
                                         خروج
                                     </a>
                                 </li>
-                            </ul>
+                            
+
+                  </ul>
                         </li>
                         <li class="chat-toggle-wrapper">
                             <a href="#" data-toggle="chatbar" class="toggle_chat">
@@ -417,11 +420,11 @@
                     <div class="profile-info row">
 
                         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
-                            <a href="{% url 'dashboard:admin_profile' %}">
+                            <a href="">
                                 {% if request.user.profile %}
                                     <img src="{{request.user.profile.url}}" class="img-responsive img-circle">
                                 {% else %}
-                                    <img src="{{ STATIC_PATH }}img/defult_profile.jpg" class="img-responsive img-circle">
+                                    <img src="{{ STATIC_PATH }}images/defult_profile.jpg" class="img-responsive img-circle">
                                 {% endif %}
                             </a>
                         </div>
@@ -429,7 +432,7 @@
                         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
 
                             <h3>
-                                <a href="{% url 'dashboard:admin_profile' %}">{{request.user.full_name}}</a>
+                                <a href="">{{request.user.full_name}}</a>
 
                                 <!-- Available statuses: online, idle, busy, away and offline -->
                                 <span class="profile-status online"></span>
@@ -441,6 +444,7 @@
                             {% endif %}
 
 
+
                         </div>
 
                     </div>
@@ -449,46 +453,40 @@
 
 
                     <ul class='wraplist'>	
-
-
-                        <li class=""> 
-                            <a href="{% url 'dashboard:dashboard' %}">
-                                <i class="fa fa-dashboard"></i>
-                                <span class="title">داشبورد</span>
-                            </a>
-                        </li>
-                        {% if request.user.is_superuser %}
-                        <li class=""> 
-                            <a href="{% url 'dashboard:user_list' %}">
-                                <i class="fa fa-user"></i>
-                                <span class="title">کاربران</span>
-                            </a>
-                        <li class=""> 
+                       <li class=""> 
                             <a href="{% url 'dashboard:team_list' %}">
                                 <i class="fa fa-users"></i>
                                 <span class="title" >اعضای تیم </span>
                             </a>
                         </li>
-                        {% endif %}
-                         <li class=""> 
-                            <a href="javascript:;">
-                                <i class="fa fa-folder"></i>
-                                <span class="title">وبلاگ</span>
-                                <span class="arrow "></span>
+
+                        <li class=""> 
+                            <a href="{% url 'dashboard:edit_about' %}">
+                                <i class="fa fa-building"></i>
+                                <span class="title">درباره ما</span>
                             </a>
-                            <ul class="sub-menu" >
-                                <li>
-                                    <a class="" href="{% url 'dashboard:post_list' %}">پست ها</a>
-                                </li>
-                                <li>
-                                    <a class="" href="{% url 'dashboard:category_list' %}">دسته بندی ها</a>
-                                </li>
-                                <li>
-                                    <a class="" href="{% url 'dashboard:tag_list' %}">برچسب ها</a>
-                                </li>
-                            </ul>
                         </li>
-                         <li class=""> 
+                        
+                        <li class=""> 
+                            <a href="{% url 'dashboard:service_list' %}">
+                                <i class="fa fa-th"></i>
+                                <span class="title" >سرویس ها</span>
+                            </a>
+                        </li>
+
+                        <li class=""> 
+                            <a href="{% url 'dashboard:stats_list' %}">
+                                <i class="fa fa-trophy"></i>
+                                <span class="title">دستاورد ها</span>
+                            </a>
+                        </li>
+                        <li class=""> 
+                            <a href="{% url 'dashboard:contact_list' %}">
+                                <i class="fa fa-envelope"></i>
+                                <span class="title">پیام ها</span>
+                            </a>
+                        </li>
+                        <li class=""> 
                             <a href="javascript:;">
                                 <i class="fa fa-image"></i>
                                 <span class="title">نمونه کارها</span>
@@ -504,27 +502,8 @@
             
                             </ul>
                         </li>
-                        <li class=""> 
-                            <a href="{% url 'dashboard:service_list' %}">
-                                <i class="fa fa-th"></i>
-                                <span class="title" >سرویس ها</span>
-                            </a>
-                        </li>
                         
-                        <li class=""> 
-                            <a href="{% url 'dashboard:stats_list' %}">
-                                <i class="fa fa-trophy"></i>
-                                <span class="title">دستاورد ها</span>
-                            </a>
-                        </li>
-                        <li class=""> 
-                            <a href="{% url 'dashboard:skill_list' %}">
-                                <i class="fa fa-cogs"></i>
-                                <span class="title" >مهارت ها</span>
-                            </a>
-                        </li>
                      
-                       
                 </div>
                 <!-- MAIN MENU - END -->
 
@@ -564,7 +543,7 @@
 
                     <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                         <div class="page-title">
-                            {% include "include/messages.html" %}
+                            {% include "include/massages.html" %}
                             <div class="pull-left">
                                  {% block title %} 
                                  {% endblock %}  

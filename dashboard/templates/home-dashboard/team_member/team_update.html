@@ -1,0 +1,23 @@
+{% extends 'dashboard-base.html' %}
+
+{% block title %}
+  <h1 class="title text-right">ویرایش عضو تیم</h1> 
+{% endblock %}
+
+{% block admin_content %}
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {{ formset.management_form }}
+    {% for subform in formset %}
+      <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        {{ subform.as_p }}
+      </div>
+    {% endfor %}
+
+    <button type="submit">ویرایش</button>
+  </form>
+</div>
+{% endblock %}

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django_prose_editor",
     'slugify',
     'dashboard.apps.DashboardConfig',
+    'widget_tweaks',
+    'jalali_date',
 
     
 ]

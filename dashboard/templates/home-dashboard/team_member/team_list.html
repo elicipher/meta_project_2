@@ -1,0 +1,39 @@
+{% extends 'dashboard-base.html' %}
+
+
+ {% block title %}
+    <h1 class="title">اعضای تیم </h1> 
+ {% endblock %}
+
+{% include 'include\massages.html' %}
+
+{% block admin_content %}
+ 
+  
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+  <table class="table table-dark table-striped text-right">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">اسم</th>
+      <th scope="col">نقش</th>
+      <th scope="col">بیوگرافی</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for team in teams %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{team.name}}</td>
+      <td>{{team.role}}</td>
+      <td>{{team.bio|truncatechars:50}}</td>
+      <td><a  href="{% url 'dashboard:team_delete'  team.pk %}" class="btn btn-danger">حذف</a></td>
+      <td><a href="{% url 'dashboard:team_update'  team.pk %}" class="btn btn-warning">ویرایش</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  
+<a href="{% url 'dashboard:team_create' %}" class="btn btn-primary">ایجاد عضو </a>
+
+{% endblock %}

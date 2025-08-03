@@ -1,0 +1,41 @@
+{% extends 'dashboard-base.html' %}
+
+
+ {% block title %}
+    <h1 class="title">دسته بندی نمونه کارها</h1> 
+ {% endblock %}
+
+{% include 'include\massages.html' %}
+
+{% block admin_content %}
+
+<div style="direction: rtl; text-align: right; padding: 0 20px;">
+<a href="{% url 'dashboard:portfolio_category_create' %}" class="btn btn-primary">ایجاد دسته بندی </a>
+
+<br>
+<br>
+  <table class="table table-dark table-striped text-right">
+      
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">عنوان</th>
+      <th scope="col">آدرس دسته بندی</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for category in categories %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{category.title}}</td>
+      <td>{{category.slug}}</td>
+      <td class="fa fa-{{category.icon}}"></td>
+      <td><a class="btn btn-danger" href="{% url 'dashboard:portfolio_category_delete' category.pk %}">حذف</a></td>
+      <td><a  class="btn btn-warning" href="{% url 'dashboard:portfolio_category_update' category.pk %}">ویرایش</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+  
+
+{% endblock %}

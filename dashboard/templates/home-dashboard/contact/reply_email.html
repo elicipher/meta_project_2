@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پاسخ به پیام شما</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .message, .response {
+            margin-bottom: 15px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>پاسخ به پیام شما</h2>
+    </div>
+
+    <div class="message">
+        <strong>پیام شما:</strong>
+        <p>{{ user_message }}</p>
+    </div>
+
+    <div class="response">
+        <strong>در جواب پیام شما :</strong>
+        <p>{{ admin_response }}</p>
+    </div>
+
+    <div class="footer">
+        <p>با تشکر از شما</p>
+        <p>تیم پشتیبانی</p>
+    </div>
+</div>
+
+</body>
+</html>

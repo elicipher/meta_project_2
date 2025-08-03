@@ -10,6 +10,8 @@ class Contact(models.Model):
     sended_time = models.DateTimeField(auto_now_add=True , verbose_name="زمان ارسال")
     replyed = models.BooleanField(default=False , verbose_name='پاسخ داده شده؟')
     reply = models.TextField(blank=True , null=True , verbose_name="پاسخ")
+    send_time = models.DateTimeField(auto_now_add=True ,blank=True , null=True , verbose_name="تاریخ ارسال")
+    reply_time = models.DateTimeField(auto_now_add=True ,blank=True , null=True , verbose_name="تاریخ پاسخ" )
 
     class Meta :
         verbose_name  = "پیام"
@@ -21,9 +23,9 @@ class Contact(models.Model):
 
 class AboutUs(models.Model):
 
-    title = models.CharField(max_length=200 , verbose_name= "عنوان")
-    image = models.ImageField(upload_to='about-us/')
-    description = models.TextField(verbose_name="توضیحات")
+    title = models.CharField(max_length=200 , null= True ,blank= True ,verbose_name= "عنوان")
+    image = models.ImageField(upload_to='about_us/', null= True ,blank= True , verbose_name= "تصویر" , help_text="پیشنهاد میشه سایز عکس 550 * 600 باشد")
+    description = models.TextField(verbose_name="توضیحات", null= True ,blank= True )
 
     def __str__(self):
         return self.title
@@ -40,8 +42,9 @@ class Social(models.Model):
         ('telegram' , 'telegram'),
         ('google-plus' , 'google plus'),
     ]
-    about_us = models.ForeignKey(AboutUs , on_delete=models.CASCADE , related_name='socials')
-    icon = models.CharField(choices=ICON_CHOICES , max_length=100 , verbose_name='نوع شبکه اجتماعی')
+    about_us = models.ForeignKey(AboutUs , on_delete=models.CASCADE , null=True, blank=True,related_name='socials')
+    user = models.ForeignKey('TeamMember', on_delete=models.CASCADE, null=True, blank=True , related_name="icons")
+    icon = models.CharField(choices=ICON_CHOICES , max_length=100 , null=True,blank=True,verbose_name='نوع شبکه اجتماعی')
     link = models.URLField(null=True , blank= True , verbose_name="آدرس شبکه اجتماعی")
 
 

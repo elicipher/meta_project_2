@@ -1,0 +1,12 @@
+{% extends "dashboard-base.html" %}
+
+{% block title %}
+  <h1 class="title">حذف "{{ object }}"</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <p>آیا مطمئنی که می‌خوای "{{ object }}" رو حذف کنی؟</p>
+  <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+  <a href="{{ cancel_url }}" class="btn btn-secondary">انصراف</a>
+</form>
+{% endblock %}

@@ -5,6 +5,7 @@ from .forms import ContactForm
 from django.contrib import messages
 from .models import Contact , AboutUs , Service , StatsSection , Portfolio , Category , TeamMember
 from blog.models import Post
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -44,7 +45,7 @@ class ContactView(CreateView):
     model = Contact
     form_class = ContactForm   
     template_name = 'home/index.html'
-    success_url = '/'
+    success_url = reverse_lazy("home:home")
 
     def form_valid(self, form):
         messages.success(self.request, "پیام شما با موفقیت ارسال شد 😊")
