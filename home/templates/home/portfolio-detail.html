@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load jalali_tags %}
+
 {% block content %}
  <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
@@ -39,16 +41,9 @@
               <div class="swiper-wrapper align-items-center">
 
                 <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-1.jpg" alt="">
+                  <img src="{{portfolio.image.url}}" alt="">
                 </div>
 
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-2.jpg" alt="">
-                </div>
-
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-3.jpg" alt="">
-                </div>
 
               </div>
               <div class="swiper-pagination"></div>
@@ -59,16 +54,16 @@
             <div class="portfolio-info">
               <h3>اطلاعات پروژه</h3>
               <ul>
-                <li><strong>دسته بندی</strong>: طراحی وب</li>
-                <li><strong>کارفرما</strong>: دیجی کالا</li>
-                <li><strong>تاریخ</strong>: 1400/01/01</li>
-                <li><strong>آدرس پروژه</strong>: <a href="#">www.example.com</a></li>
+                <li><strong>دسته بندی</strong>:{{portfolio.category}}</li>
+                <li><strong>کارفرما</strong>:{{portfolio.employer}}</li>
+                <li><strong>تاریخ</strong>: {{portfolio.history|to_jalali}}</li>
+                <li><strong>آدرس پروژه</strong>: <a href="{{portfolio.address_project}}">{{portfolio.address_project}}</a></li>
               </ul>
             </div>
             <div class="portfolio-description">
               <h2>این یک توضیح کوتاه در مورد پروژه است</h2>
               <p>
-                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است
+               {{portfolio.description}}
               </p>
             </div>
           </div>

@@ -250,7 +250,7 @@ class ContactReplyView(UpdateView ):
     def form_valid(self , form):
         obj = form.save(commit=False)
         if 'reply' in form.changed_data and obj.reply :
-            obj.is_replied = True
+            obj.replyed = True
             self.send_mail_to_user(obj)
         obj.save()
         return super().form_valid(form)

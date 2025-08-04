@@ -12,6 +12,8 @@
   
 <div style="direction: rtl; text-align: right; padding: 0 20px;">
   <table class="table table-dark table-striped text-right">
+    <a href="{% url 'dashboard:team_create' %}" class="btn btn-primary">ایجاد عضو </a>
+
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -34,6 +36,5 @@
   </tbody>
 </table>
   
-<a href="{% url 'dashboard:team_create' %}" class="btn btn-primary">ایجاد عضو </a>
 
 {% endblock %}

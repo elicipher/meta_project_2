@@ -94,11 +94,16 @@ class StatsSection(models.Model):
      
 class Category(models.Model):
     title = models.CharField(max_length=100 , verbose_name='عنوان دسته بندی')
-    slug = models.CharField(max_length=100 , unique= True , verbose_name= 'آدرس دسته بندی')
+    slug = models.SlugField(max_length=100 ,allow_unicode=True, unique= True , verbose_name= 'آدرس دسته بندی')
 
     class Meta:
         verbose_name = 'دسته‌بندی'
         verbose_name_plural = 'دسته‌بندی‌ها'
+        
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, separator='-', lowercase=False, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -112,7 +117,7 @@ class Portfolio(models.Model):
     category = models.ForeignKey(Category , on_delete= models.CASCADE , related_name= 'category', verbose_name='دسته‌بندی')
     employer = models.CharField(max_length=150, verbose_name='کارفرما')
     history = models.DateField(verbose_name='تاریخ انجام')
-    address_project = models.CharField(max_length=200, verbose_name='آدرس پروژه')
+    address_project = models.URLField(max_length=200, verbose_name='آدرس پروژه')
     description=models.TextField(verbose_name='توضیحات')
     image = models.ImageField(upload_to = 'portfolio/', verbose_name='تصویر')
 

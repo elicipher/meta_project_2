@@ -6,6 +6,8 @@ from django.contrib import messages
 from .models import Contact , AboutUs , Service , StatsSection , Portfolio , Category , TeamMember
 from blog.models import Post
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 # Create your views here.
 
@@ -52,7 +54,9 @@ class ContactView(CreateView):
         return super().form_valid(form)
     
 
-class PortfolioView(View):
+class PortfolioDetailView(View):
     def get(self , request , port_slug):
-        return render(request , "home/portfolio-detail.html")
+        portfolio = get_object_or_404(Portfolio , slug = port_slug)
+        return render(request , "home/portfolio-detail.html" , {'portfolio':portfolio})
+
 

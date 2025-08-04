@@ -129,32 +129,28 @@
                             <ul>
                                 <a href="{% url 'home:home' %}" class="btn btn-dark" style="-webkit-text-fill-color: aliceblue;">همه</a>
                                 {% for cat in category %}
-                                <a  href="{% url 'home:home' cat_slug=cat.slug %}" class="btn btn-dark" style="-webkit-text-fill-color: aliceblue;">{{cat.title}}</a>
+                                <a  href="{% url 'home:home' cat.slug %}" class="btn btn-dark" style="-webkit-text-fill-color: aliceblue;">{{cat.title}}</a>
                                 {% endfor %}
                             </ul>
+                            <script>
+                           // ذخیره موقعیت اسکرول هنگام خروج یا رفرش
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('scrollPos', window.scrollY);
+});
+
+// بازیابی موقعیت اسکرول بعد از لود صفحه
+window.addEventListener('load', () => {
+  const scrollPos = localStorage.getItem('scrollPos');
+  if (scrollPos) {
+    window.scrollTo(0, parseInt(scrollPos));
+  }
+});
+                            </script>
                         </div>
                     </div>
                 </div>
                 <div class="row portfolio-items">
-                {% for por in portfolio %}
-                    <!--Portfolio Item-->
-                    <div class="col-lg-4 col-md-6 item development">
-                        <div class="item-content">
-                            
-                            <img src="{{por.image.url}}" alt="">
-                            <div class="item-overlay">
-                                <h6>{{por.title}}</h6>
-                                <div class="icons">
-                                    <span class="icon">
-                                        <a href="{% url 'home:portfolio-detail' por.slug %}">
-                                            <i class="fa fa-search"></i>
-                                        </a>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                {% include 'home/portfolio_items.html' %}
                 
                 </div>
             </div>
