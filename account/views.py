@@ -20,7 +20,7 @@ class RegisterView(View):
             return redirect('home:home')
         return super().dispatch(request, *args, **kwargs)
     
-    template_name = 'account/user_register.html'
+    template_name = 'account/register.html'
     form_class = UserRegitrationForm
 
     def get(self , request):
@@ -33,9 +33,10 @@ class RegisterView(View):
         if form.is_valid():
             cd = form.cleaned_data
             full_name = cd.get('full_name')
+            phone_number = cd.get('phone_number')
             email = cd.get('email')
             password = cd.get('password')
-            new_member = Member(full_name=full_name , email = email )
+            new_member = Member(full_name=full_name , phone_number = phone_number , email = email )
             new_member.set_password(password)
             new_member.save()
             login(self.request,new_member)
@@ -54,7 +55,7 @@ class LoginView(View):
             return redirect('home:home')
         return super().dispatch(request, *args, **kwargs)
     
-    template_name = 'account/user_login.html'
+    template_name = 'account/login.html'
     form_class = UserLoginForm
 
     def get(self , request):

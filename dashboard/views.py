@@ -4,13 +4,26 @@ from home.models import AboutUs , Service , StatsSection , Portfolio  ,Category 
 from django.views.generic import CreateView , DeleteView , ListView , UpdateView 
 from django.urls import reverse_lazy
 from .mixins import CancelUrlMixin , SuperUserOnlyMixin , DeleteSuccessMessageMixin , SuccessMessageMixin
-from .forms import SocialLinkFormSet , PortfolioForm , SocialTeamMemberFormset , ContactForm , PostForm , CommentReplyForm , CommentConfirmeForm
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from blog.models import Post  , Comment
 from django.contrib import messages
+from account.models import Member
+from .forms import (
+    AdminProfileForm,
+    CommentConfirmeForm,
+    CommentReplyForm,
+    ContactForm,
+    PortfolioForm,
+    PostForm,
+    SocialLinkFormSet,
+    SocialTeamMemberFormset,
+    UpdateUserForm,
+
+)
+
 
 # Create your views here.
 
@@ -332,3 +345,55 @@ class CommentDetailView(View):
             return redirect("dashboard:comment_list")
         return render(request , self.template_name , {"form":form,"comment":comment})
 
+class AdminProfileView(View):
+
+    form_class = AdminProfileForm
+    template_name = 'account-dashboard/profile.html'
+
+    def get(self , request):
+        form = self.form_class(instance=request.user)
+        return render(request ,self.template_name , {"form":form})
+        
+    def post(self , request):
+        form = self.form_class( request.POST , request.FILES ,instance=request.user)
+        if form.is_valid():
+           form.save()
+           request.user.full_name = form.cleaned_data['full_name']
+           request.user.phone_number = form.cleaned_data['phone_number']
+           request.user.email = form.cleaned_data['email']
+           request.user.role = form.cleaned_data['role']
+           request.user.save()
+           messages.success(request , "تغییرات با موفقیت انجام شد !" , "success")
+        return redirect("dashboard:admin_profile")
+
+
+class UserListView(ListView , SuperUserOnlyMixin):
+    model = Member
+    template_name = 'account-dashboard/user_list.html'
+    context_object_name = 'users'
+
+class UserDeleteView(DeleteSuccessMessageMixin,DeleteView , CancelUrlMixin , SuperUserOnlyMixin):
+    model = Member
+    template_name = 'shared/delete.html'
+    success_url = reverse_lazy("dashboard:user_list")
+
+class UserCreateView(SuccessMessageMixin,CreateView , SuperUserOnlyMixin):
+    model = Member
+    fields = '__all__'
+    template_name = 'account-dashboard/user_create.html'
+    success_url = reverse_lazy("dashboard:user_list")
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+        return super().form_valid(form)
+
+
+    
+
+
+class UserUpdateView(UpdateView , SuperUserOnlyMixin):
+    model = Member
+    template_name = 'account-dashboard/user_update.html'
+    form_class = UpdateUserForm
+    success_url = reverse_lazy("dashboard:user_list")  

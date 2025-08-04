@@ -1,0 +1,72 @@
+{% extends 'dashboard-base.html' %}
+{% load widget_tweaks %}
+
+{% block admin_content %}
+<div class="container mt-4" style="direction: rtl; text-align: right;">
+  <div class="card shadow-sm border-0 p-4 rounded-4">
+    <h4 class="text-dark mb-4 border-bottom pb-2">ویرایش کاربر</h4>
+        {% if object.avatar  %}
+        <img src="{{ object.avatar.url }}" style="width: 200px; height: 200px;" >
+       
+        {% else %}
+        <img src="\static\images\defult_profile.jpg" alt="آواتار" style="width: 200px; height: 200px;">
+        {% endif %}
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="row">
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.avatar.label }}</label>
+          {{ form.avatar|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.full_name.label }}</label>
+          {{ form.full_name|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.email.label }}</label>
+          {{ form.email|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.phone_number.label }}</label>
+          {{ form.phone_number|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.role.label }}</label>
+          {{ form.role|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.password.label }}</label>
+          {{ form.password|add_class:"form-control" }}
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3 text-end">
+  <div class="form-check form-switch d-flex justify-content-end">
+    {{ form.is_admin|add_class:"form-check-input ms-2" }}
+    <label class="form-check-label" for="{{ form.is_admin.id_for_label }}">
+      {{ form.is_admin.label }}
+    </label>
+  </div>
+</div>
+
+<div class="col-md-6 mb-3 text-end">
+  <div class="form-check form-switch d-flex justify-content-end">
+    {{ form.is_superobject|add_class:"form-check-input ms-2" }}
+    <label class="form-check-label" for="{{ form.is_superobject.id_for_label }}">
+      {{ form.is_superobject.label }}
+    </label>
+  </div>
+</div>
+
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">ذخیره</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

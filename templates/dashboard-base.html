@@ -373,7 +373,7 @@
                                     </a>
                                 </li> -->
                                 <li>
-                                    <a href="">
+                                    <a href="{% url 'dashboard:admin_profile' %}">
                                         <i class="fa fa-user"></i>
                                         پروفایل
                                     </a>
@@ -385,7 +385,7 @@
                                     </a>
                                 </li> -->
                                 <li class="#last">
-                                    <a href="">
+                                    <a href="{% url 'account:user_logout' %}">
                                         <i class="fa fa-lock"></i>
                                         خروج
                                     </a>
@@ -421,8 +421,8 @@
 
                         <div class="profile-image col-md-4 col-sm-4 col-xs-4">
                             <a href="">
-                                {% if request.user.profile %}
-                                    <img src="{{request.user.profile.url}}" class="img-responsive img-circle">
+                                {% if request.user.avatar %}
+                                    <img src="{{request.user.avatar.url}}" class="img-responsive img-circle">
                                 {% else %}
                                     <img src="{{ STATIC_PATH }}images/defult_profile.jpg" class="img-responsive img-circle">
                                 {% endif %}
@@ -459,12 +459,19 @@
                                 <span class="title" > مشاهده سایت</span>
                             </a>
                         </li>
-                       <li class=""> 
-                            <a href="{% url 'dashboard:team_list' %}">
+                     {% if request.user.is_superuser %}
+                        <li class=""> 
+                            <a href="{% url 'dashboard:user_list' %}">
                                 <i class="fa fa-users"></i>
+                                <span class="title">کاربران</span>
+                            </a>
+                        <li class=""> 
+                            <a href="{% url 'dashboard:team_list' %}">
+                                <i class="fa fa-user"></i>
                                 <span class="title" >اعضای تیم </span>
                             </a>
                         </li>
+                        {% endif %}
 
                         <li class=""> 
                             <a href="{% url 'dashboard:edit_about' %}">

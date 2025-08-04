@@ -1,0 +1,82 @@
+{% extends 'dashboard-base.html' %}
+{% load widget_tweaks %}
+
+{% block admin_content %}
+<div class="container mt-4" style="direction: rtl; text-align: right;">
+  <div class="card shadow-sm border-0 p-4 rounded-4">
+    <h4 class="text-dark mb-4 border-bottom pb-2">ایجاد کاربر جدید</h4>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="row">
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.avatar.label }}</label>
+          {{ form.avatar|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.full_name.label }}</label>
+          {{ form.full_name|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.email.label }}</label>
+          {{ form.email|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.phone_number.label }}</label>
+          {{ form.phone_number|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.role.label }}</label>
+          {{ form.role|add_class:"form-control" }}
+        </div>
+
+        <div class="col-md-6 mb-3 text-end">
+          <label class="form-label">{{ form.password.label }}</label>
+          {{ form.password|add_class:"form-control" }}
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3 text-end">
+  <div class="form-check form-switch d-flex justify-content-end">
+    {{ form.is_admin|add_class:"form-check-input ms-2" }}
+    <label class="form-check-label" for="{{ form.is_admin.id_for_label }}">
+      {{ form.is_admin.label }}
+    </label>
+  </div>
+</div>
+
+<div class="col-md-6 mb-3 text-end">
+  <div class="form-check form-switch d-flex justify-content-end">
+    {{ form.is_superuser|add_class:"form-check-input ms-2" }}
+    <label class="form-check-label" for="{{ form.is_superuser.id_for_label }}">
+      {{ form.is_superuser.label }}
+    </label>
+  </div>
+</div>
+<div class="col-md-6 mb-3 text-end">
+  <div class="form-check form-switch d-flex justify-content-end">
+    {{ form.is_active|add_class:"form-check-input ms-2" }}
+    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+      {{ form.is_active.label }}
+    </label>
+  </div>
+</div>
+
+          {% for error in field.errors %}
+            <div class="text-danger small mt-1">
+              {{ error }}
+            </div>
+          {% endfor %}
+
+
+
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">ایجاد</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

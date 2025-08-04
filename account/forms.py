@@ -6,54 +6,101 @@ from django.contrib.auth import authenticate
 
 
 class UserRegitrationForm(forms.Form):
-    full_name = forms.CharField(label='نام و نام خانوادگی',required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "نام و نام خانوادگی"}))
-    email = forms.EmailField(label='ایمیل',required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "آدرس ایمیل"}))
-    password = forms.CharField(label='رمز عبور' ,required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "رمز عبور"}))
-    confirm_password = forms.CharField(label='تایید رمز عبور',required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "تایید رمز عبور"}))
-    
+    full_name = forms.CharField(
+        label='نام و نام خانوادگی',
+        required=False,
+        widget=forms.TextInput(attrs={
+            "class": "single-field",
+            "placeholder": "نام و نام خانوادگی"
+        })
+    )
+    phone_number = forms.CharField(
+        label='شماره تلفن',
+        max_length=11,
+        required=False,
+        widget=forms.TextInput(attrs={
+            "class": "single-field",
+            "placeholder": 'شماره تلفن'
+        })
+    )
+    email = forms.EmailField(
+        label='ایمیل',
+        required=False,
+        widget=forms.TextInput(attrs={
+            "class": "single-field",
+            "placeholder": 'ایمیل'
+        })
+    )
+    password = forms.CharField(
+        label='رمز عبور',
+        required=False,
+        widget=forms.TextInput(attrs={
+            "class": "single-field",
+            "placeholder": "رمز عبور"
+        })
+    )
+    confirm_password = forms.CharField(
+        label='تایید رمز عبور',
+        required=False,
+        widget=forms.TextInput(attrs={
+            "class": "single-field",
+            "placeholder": "تایید رمز عبور"
+        })
+    )
+
     def clean(self):
         cd = super().clean()
+
+        # full_name
         full_name = cd.get("full_name")
-        if not full_name :
-            self.add_error("full_name", "لطفا فرم را پر کنید")
+        if not full_name:
+            self.add_error("full_name", "لطفا نام و نام خانوادگی را وارد کنید")
 
+        # phone_number
+        phone_number = cd.get("phone_number")
+        if not phone_number:
+            self.add_error("phone_number", "لطفا شماره تلفن را وارد کنید")
+        elif Member.objects.filter(phone_number=phone_number).exists():
+            self.add_error("phone_number", "شماره تلفن درحال حاضر وجود دارد")
+
+        # email
         email = cd.get("email")
-        email_exists = Member.objects.filter(email = email).exists()
-        if not email :
-            self.add_error("email","لطفا فرم را پر کنید")
-        elif email_exists :
-            self.add_error("email","ایمیل درحال حاضر وجود دارد")
+        if not email:
+            self.add_error("email", "لطفا ایمیل را وارد کنید")
+        elif Member.objects.filter(email=email).exists():
+            self.add_error("email", "این ایمیل قبلاً ثبت شده است")
 
+        # password
         password = cd.get("password")
         confirm_password = cd.get("confirm_password")
-
         if not password:
-            self.add_error("password","لطفا رمز عبور را وارد کنید")
-        elif not confirm_password :
-            self.add_error("confirm_password","لطفا فرم را پرکنید ")
+            self.add_error("password", "لطفا رمز عبور را وارد کنید")
+        elif not confirm_password:
+            self.add_error("confirm_password", "لطفاً تایید رمز را وارد کنید")
         elif confirm_password != password:
-            self.add_error("confirm_password","رمزهای عبور باید مطابقت داشته باشند ")
-        elif len(password) <= 8 :
-            self.add_error("password","رمز عبور باید بیشتر از ۸ تا کارکتر باشد")
-        
+            self.add_error("confirm_password", "رمزهای عبور باید مطابقت داشته باشند")
+        elif len(password) <= 8:
+            self.add_error("password", "رمز عبور باید بیشتر از ۸ کاراکتر باشد")
+
         cd.pop("confirm_password", None)
         return cd
 
+
         
 class UserLoginForm(forms.Form):
-    email = forms.CharField(label='ایمیل',required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "ایمیل تان را وارد کنید  "})) 
+    phone_number = forms.CharField(label='شماره تلفن',max_length=11,required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": " شماره تلفن تان را وارد کنید  "})) 
     password = forms.CharField(label='رمز عبور' ,required=False , widget=forms.TextInput(attrs={ "class": "single-field","placeholder": "رمز عبور"}))
 
     def clean(self):
         cd = super().clean()
-        email = cd.get("email")
+        phone_number = cd.get("phone_number")
         password= cd.get("password")
-        user = authenticate(username = email , password =password )
+        user = authenticate(username = phone_number , password =password )
        
-        if not password or not email  :
+        if not password or not phone_number  :
             raise ValidationError("لطفا فرم را پر کنید")
         if user is None :
-            raise ValidationError("ایمیل یا رمز عبور اشتباه است")
+            raise ValidationError("شماره تلفن یا رمز عبور اشتباه است")
 
         self.user = user  # کاربر معتبر را ذخیره می‌کنیم تا در ویو استفاده شود
         

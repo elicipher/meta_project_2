@@ -7,7 +7,7 @@ from jalali_date.widgets import AdminJalaliDateWidget
 from django.db import models
 from blog.models import Post , Comment
 from django_prose_editor.fields import ProseEditorField
-
+from account.models import Member
 
 SocialLinkFormSet = inlineformset_factory(
     AboutUs,
@@ -86,3 +86,33 @@ class CommentConfirmeForm(forms.ModelForm):
         labels = {
             'confirme': 'تایید',
         }
+
+class AdminProfileForm(forms.ModelForm):
+
+    phone_number = forms.CharField(max_length=11,min_length=11 , widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'شماره تلفن'}),label=' :شماره تلفن')
+    
+
+    class Meta:
+        model = Member
+        fields = ("full_name","phone_number","email","avatar","role")
+
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'ایمیل'}),
+            'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'نام و نام خانوادگی'}),
+            'role': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'نقش'}),
+            
+        }
+        labels = {
+            'email': ':ایمیل',
+            'full_name':  ':نام',
+            'profile': ' :تصویر پروفایل',
+            'phone_number': ':شماره تلفن',
+            'role':'نقش',
+        }
+      
+
+class UpdateUserForm(forms.ModelForm):
+
+    class Meta:
+        model = Member
+        fields = ['full_name', 'email', 'phone_number', 'role','is_admin', 'is_superuser', 'avatar']

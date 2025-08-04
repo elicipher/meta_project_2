@@ -57,6 +57,11 @@ urlpatterns = [
 
     path('home/app/', include(home_urls)),
     path('blog/app/', include(blog_urls)),
+    path('admin/profile/',views.AdminProfileView.as_view(),name = 'admin_profile'),
+    path('users/list/',views.UserListView.as_view(),name='user_list'),
+    path('user/create/', views.UserCreateView.as_view(),name='user_create'),
+    path('user/delete/<int:pk>/', views.UserDeleteView.as_view(),name='user_delete'),
+    path('user/update/<int:pk>/', views.UserUpdateView.as_view(),name='user_update'),
     path('',views.DashboardView.as_view(),name="dashboard"),
 
 ]
